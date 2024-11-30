@@ -27,62 +27,6 @@ const transactions = [
     attachment: true,
   },
   {
-    dateTime: "2023-11-30T14:50:00.000Z",
-    toFrom: "ABC Supplies",
-    amount: "-102.43",
-    account: "Ops / Payroll",
-    paymentMethod: "Credit Card ••5678",
-    attachment: false,
-  },
-  {
-    dateTime: "2023-11-29T10:05:00.000Z",
-    toFrom: "XYZ Services",
-    amount: "-250.00",
-    account: "Ops / Payroll",
-    paymentMethod: "Jane B. ••1234",
-    attachment: true,
-  },
-  {
-    dateTime: "2023-11-29T12:30:00.000Z",
-    toFrom: "Transfer to AR",
-    amount: "-54,810.16",
-    account: "Ops / Payroll",
-    paymentMethod: "Transfer",
-    attachment: true,
-  },
-  {
-    dateTime: "2023-11-29T15:00:00.000Z",
-    toFrom: "Refund from ABC Supplies",
-    amount: "102.43",
-    account: "Ops / Payroll",
-    paymentMethod: "Jane B. ••1234",
-    attachment: false,
-  },
-  {
-    dateTime: "2023-11-28T09:00:00.000Z",
-    toFrom: "Transfer from Payroll",
-    amount: "500.00",
-    account: "AR",
-    paymentMethod: "Jane B. ••1234",
-    attachment: true,
-  },
-  {
-    dateTime: "2023-11-28T10:15:00.000Z",
-    toFrom: "Lily's Eatery",
-    amount: "0.93",
-    account: "Ops / Payroll",
-    paymentMethod: "Jane B. ••1234",
-    attachment: true,
-  },
-  {
-    dateTime: "2023-11-28T13:30:00.000Z",
-    toFrom: "XYZ Office Supplies",
-    amount: "-45.20",
-    account: "Ops / Payroll",
-    paymentMethod: "Credit Card ••5678",
-    attachment: true,
-  },
-  {
     dateTime: "2023-11-28T15:45:00.000Z",
     toFrom: "Lily's Eatery",
     amount: "0.93",
@@ -91,7 +35,6 @@ const transactions = [
     attachment: true,
   },
 ];
-
 
 const groupAndSortTransactions = (transactions) => {
   const sortedTransactions = [...transactions].sort(
@@ -111,7 +54,7 @@ const groupAndSortTransactions = (transactions) => {
 
 const Table = () => {
   const groupedTransactions = groupAndSortTransactions(transactions);
-  console.log(groupedTransactions, "groupedTransactions")
+  console.log(groupedTransactions, "groupedTransactions");
 
   return (
     <Section>
@@ -120,7 +63,7 @@ const Table = () => {
           <table className="transactions-table">
             <thead>
               <tr>
-                <th>Time Stamp</th>
+                <th>Date</th>
                 <th>To/From</th>
                 <th>Amount</th>
                 <th>Account</th>
@@ -132,30 +75,21 @@ const Table = () => {
               {Object.entries(groupedTransactions).map(([date, transactions]) => (
                 <React.Fragment key={date}>
                   {transactions.map((transaction, index) => {
-                    const dateObj = new Date(transaction.dateTime);
-                    const formattedDate = dateObj.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "2-digit",
-                    });
-                    const formattedTime = dateObj.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    });
+                    const time = new Date(transaction.dateTime).toISOString();
                     return (
                       <tr key={index} className="transaction-row">
                         <td className="date-cell">
                           {index === 0 ? (
                             <>
-                              <span className="date">{formattedDate}</span>
+                              <span className="date">{date}</span>
                               <br />
-                              <span className="time-show">{formattedTime}</span>
+                              <span className="time-show">{time}</span>
                             </>
                           ) : (
                             <>
-                              <span className="date hidden">{formattedDate}</span>
+                              <span className="date hidden">{date}</span>
                               <br />
-                              <span className="time">{formattedTime}</span>
+                              <span className="time">{time}</span>
                             </>
                           )}
                         </td>
@@ -194,7 +128,6 @@ const Table = () => {
     </Section>
   );
 };
-
 
 const Section = styled.div`
   display: flex;
