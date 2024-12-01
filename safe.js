@@ -1,5 +1,6 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
+import useGroupAndSortTransactions from "./hooks/useGroupAndSortTransactions";
 
 const transactions = [
   {
@@ -27,6 +28,62 @@ const transactions = [
     attachment: true,
   },
   {
+    dateTime: "2023-11-30T14:50:00.000Z",
+    toFrom: "ABC Supplies",
+    amount: "-102.43",
+    account: "Ops / Payroll",
+    paymentMethod: "Credit Card ••5678",
+    attachment: false,
+  },
+  {
+    dateTime: "2023-11-29T10:05:00.000Z",
+    toFrom: "XYZ Services",
+    amount: "-250.00",
+    account: "Ops / Payroll",
+    paymentMethod: "Jane B. ••1234",
+    attachment: true,
+  },
+  {
+    dateTime: "2023-11-29T12:30:00.000Z",
+    toFrom: "Transfer to AR",
+    amount: "-54,810.16",
+    account: "Ops / Payroll",
+    paymentMethod: "Transfer",
+    attachment: true,
+  },
+  {
+    dateTime: "2023-11-29T15:00:00.000Z",
+    toFrom: "Refund from ABC Supplies",
+    amount: "102.43",
+    account: "Ops / Payroll",
+    paymentMethod: "Jane B. ••1234",
+    attachment: false,
+  },
+  {
+    dateTime: "2023-11-28T09:00:00.000Z",
+    toFrom: "Transfer from Payroll",
+    amount: "500.00",
+    account: "AR",
+    paymentMethod: "Jane B. ••1234",
+    attachment: true,
+  },
+  {
+    dateTime: "2023-11-28T10:15:00.000Z",
+    toFrom: "Lily's Eatery",
+    amount: "0.93",
+    account: "Ops / Payroll",
+    paymentMethod: "Jane B. ••1234",
+    attachment: true,
+  },
+  {
+    dateTime: "2023-11-28T13:30:00.000Z",
+    toFrom: "XYZ Office Supplies",
+    amount: "-45.20",
+    account: "Ops / Payroll",
+    paymentMethod: "Credit Card ••5678",
+    attachment: true,
+  },
+  {
     dateTime: "2023-11-28T15:45:00.000Z",
     toFrom: "Lily's Eatery",
     amount: "0.93",
@@ -36,34 +93,34 @@ const transactions = [
   },
 ];
 
-const groupAndSortTransactions = (transactions) => {
-  const sortedTransactions = [...transactions].sort(
-    (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
-  );
-
-  const grouped = {};
-
-  sortedTransactions.forEach((transaction) => {
-    const date = new Date(transaction.dateTime).toLocaleDateString();
-    if (!grouped[date]) grouped[date] = [];
-    grouped[date].push(transaction);
-  });
-
-  return grouped;
-};
-
 const Table = () => {
-  const groupedTransactions = groupAndSortTransactions(transactions);
-  console.log(groupedTransactions, "groupedTransactions");
+  const [sortOrder, setSortOrder] = useState({ date: "desc", time: "desc" });
+
+  const handleSortOrderChange = (type) => {
+    setSortOrder((prev) => ({
+      ...prev,
+      [type]: prev[type] === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  const groupedTransactions = useGroupAndSortTransactions(transactions, sortOrder);
 
   return (
     <Section>
       <TableContainer className="container">
+      <SortButtons>
+        <button onClick={() => handleSortOrderChange("date")}>
+          Sort by Date: {sortOrder.date === "asc" ? "Ascending" : "Descending"}
+        </button>
+        <button onClick={() => handleSortOrderChange("time")}>
+          Sort by Time: {sortOrder.time === "asc" ? "Ascending" : "Descending"}
+        </button>
+      </SortButtons>
         <div className="table-wrapper">
           <table className="transactions-table">
             <thead>
               <tr>
-                <th>Date</th>
+                <th>Time Stamp</th>
                 <th>To/From</th>
                 <th>Amount</th>
                 <th>Account</th>
@@ -71,8 +128,8 @@ const Table = () => {
                 <th>Attachment</th>
               </tr>
             </thead>
-            <tbody>
-              {Object.entries(groupedTransactions).map(([date, transactions]) => (
+             <tbody>
+             {Object.entries(groupedTransactions).map(([date, transactions]) => (
                 <React.Fragment key={date}>
                   {transactions.map((transaction, index) => {
                     const dateObj = new Date(transaction.dateTime);
@@ -138,10 +195,12 @@ const Table = () => {
   );
 };
 
+
 const Section = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const TableContainer = styled.div`
@@ -277,6 +336,26 @@ const TableContainer = styled.div`
       width: 28px;
       height: 28px;
       font-size: 0.8rem;
+    }
+  }
+`;
+
+const SortButtons = styled.div`
+  margin-bottom: 1rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #0056b3;
     }
   }
 `;
