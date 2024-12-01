@@ -1,4 +1,4 @@
-# Instructions to Run Locally
+## Instructions to Run Locally
 
 ### `npm i`
 
@@ -6,7 +6,7 @@
 
 ### `npm run build`
 
-### **High-Level Design (HLD) of Transactions Table With Group and Time and Date based Sorting** **Github:-** [https://github.com/babajankhanp/Unifize-assignment](https://github.com/babajankhanp/Unifize-assignment)
+# **High-Level Design (HLD) of Transactions Table With Group and Time and Date based Sorting** **Github:-** [https://github.com/babajankhanp/Unifize-assignment](https://github.com/babajankhanp/Unifize-assignment)
 
 **Hosted Link :-** [https://unifize-assignment.vercel.app/](https://unifize-assignment.vercel.app/)
 
