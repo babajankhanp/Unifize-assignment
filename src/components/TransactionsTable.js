@@ -379,6 +379,7 @@ const ExportButton = styled.div`
      border-radius: 50px;
      background-color: rgba(112, 115, 147, 0.058823529411764705);
      cursor: pointer;
+     border: 1px solid #454545;
 `;
 
 const ExportImage = styled.div`
