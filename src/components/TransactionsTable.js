@@ -157,7 +157,7 @@ const TransactionsTable = () => {
                         </td>
                         <td>{transaction.account}</td>
                         <td>{transaction.paymentMethod}</td>
-                        <td>{transaction.attachment ? "+" : "-"}</td>
+                        <td><div className="plus">{transaction.attachment ? "+" : "-"}</div></td>
                       </tr>
                     );
                   })}
@@ -295,11 +295,23 @@ const TableContainer = styled.div`
     }
   }
 
+  .plus {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(112,115,147,0.058823529411764705);
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #363644;
+    border-radius: 50%;
+  }
+
   @media (max-width: 576px) {
     .transactions-table th:nth-child(4),
-    .transactions-table td:nth-child(4), /* Hide "Account" column */
+    .transactions-table td:nth-child(4),
     .transactions-table th:nth-child(6),
-    .transactions-table td:nth-child(6) /* Hide "Attachment" column */ {
+    .transactions-table td:nth-child(6)  {
       display: none;
     }
 
